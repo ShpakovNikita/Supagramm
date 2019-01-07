@@ -1,0 +1,36 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = Localizer["Title"];
+}
+<div class="col-12">
+    <div class="row">
+        <div class="col">
+            <h5 class="card-header">@Localizer["Users"]</h5>
+            <div class="card-body">
+                <h5 class="card-title">@Localizer["UsersManagerPanel"]</h5>
+                <p class="card-text">@Localizer["UsersDescription"]</p>
+                <a href="@Url.Action("Users", "Admin")" class="btn btn-primary">@Localizer["Manage"]</a>
+            </div>
+        </div>
+
+        <div class="col">
+            <h5 class="card-header">@Localizer["Comments"]</h5>
+            <div class="card-body">
+                <h5 class="card-title">@Localizer["CommentsManagerPanel"]</h5>
+                <p class="card-text">@Localizer["CommentsDescription"]</p>
+                <a href="@Url.Action("Comments", "Admin")" class="btn btn-primary">@Localizer["Manage"]</a>
+            </div>
+        </div>
+
+        <div class="col">
+            <h5 class="card-header">@Localizer["Posts"]</h5>
+            <div class="card-body">
+                <h5 class="card-title">@Localizer["PostsManagerPanel"]</h5>
+                <p class="card-text">@Localizer["PostsDescription"]</p>
+                <a href="@Url.Action("Posts", "Admin")" class="btn btn-primary">@Localizer["Manage"]</a>
+            </div>
+        </div>
+    </div>
+</div>

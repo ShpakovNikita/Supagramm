@@ -1,0 +1,33 @@
+﻿@using IgiLab.Models.ViewModels;
+@model System.Int32;
+
+@{
+    ViewBag.Title = "Post";
+}
+
+<div class="col-10">
+    <div class="page-mask"></div>
+    <div>
+        @await Component.InvokeAsync("PostWindow", new { _id = Model })
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        function Like(postId) {
+            $.ajax({
+                url: "/api/like/" + postId,
+                contentType: "application/json",
+                method: "POST",
+                success: function (likesCount) {
+                    var icon = $('.foo');
+                    var icon_fa_prefix = icon.attr('data-prefix');
+                    icon.toggleClass('fas');
+                    icon.toggleClass('far');
+
+                    document.getElementById("likesText").innerHTML = likesCount + " Likes";
+                }
+            })
+        }
+    </script>
+}

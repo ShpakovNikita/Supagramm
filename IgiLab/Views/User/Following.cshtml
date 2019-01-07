@@ -1,0 +1,54 @@
+﻿@model IEnumerable<IgiLab.Models.ViewModels.SubscriptionViewModel>
+@using IgiLab.Constants.Enums;
+@{
+    ViewData["Title"] = "Followers";
+}
+
+<div class="col-10">
+    <h2>Followers:</h2>
+    <table class="table">
+        <tbody>
+            @foreach (var user in Model)
+            {
+                string path = System.IO.Path.Combine(Pathes.WAB_STATICFILES_DIR, user.AvatarPath);
+                string webPath = path.Replace(@"\", "/");
+
+                <tr>
+                    <td>
+                        <a href="@Url.Action("Profile", "User", new { id = user.Id })">
+                        <img src="@webPath" class="img-hand avatar-small" runat="server">
+                    </td>
+                    <td>@user.Username</td>
+                    <td>@user.Firstname @user.Lastname</td>
+                    <td>
+                        @switch (user.SubscriptionStatus)
+                        {
+                            case SubscriptionStatus.CanSubscribe:
+                                <a class="btn btn-primary" href="@Url.Action("Subscribe", "User", new { id = user.Id })">Subscribe</a>
+                                break;
+
+                            case SubscriptionStatus.AlreadyFollowing:
+                                <div class="dropdown">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Subscribe
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item" href="@Url.Action("Unsubscribe", "User", new { id = user.Id })" onclick="return confirm('Are you sure you want to unsubscribe from @user.Username?')">Unsubscribe</a>
+                                    </div>
+                                </div>
+                                break;
+
+                            case SubscriptionStatus.CannotSubscribe:
+                                <div class="btn btn-secondary">Subscribe</div>
+                                break;
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @if (!Model.Any())
+    {
+        <h2 class="text-center">No following</h2>
+    }
+</div>

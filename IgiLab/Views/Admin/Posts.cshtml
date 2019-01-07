@@ -1,0 +1,67 @@
+﻿@model IgiLab.Models.ViewModels.Admin.PostAggregationModel
+@using IgiLab.Extensions;
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = Localizer["Title"];
+}
+<div class="col-10">
+    <h2 class="text-center">@Localizer["Posts"]</h2>
+    <div class="container">
+        <form asp-action="Comments" asp-controller="Admin" asp-antiforgery="true" class="form-signin" method="get">
+            <div class="validation" asp-validation-summary="ModelOnly" />
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="PostSearchModel.DescriptionFilter">@Localizer["TypeDescription"]</label>
+                        <input class="form-control" asp-for="PostSearchModel.DescriptionFilter" value="@Model.PostSearchModel.DescriptionFilter" />
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="PostSearchModel.OwnerUsername">@Localizer["TypeUsername"]</label>
+                        <input class="form-control" asp-for="PostSearchModel.OwnerUsername" value="@Model.PostSearchModel.OwnerUsername" />
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="PostSearchModel.Date">@Localizer["TypeDate"]</label>
+                        <input type="datetime-local" class="form-control" asp-for="PostSearchModel.Date" value="@Model.PostSearchModel.Date.ToString("dd MMMM yyyy")" />
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group text-center mt-4">
+                        <input type="submit" value="Find!" class="btn btn-primary" />
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    @if (!Model.Posts.Any())
+    {
+    <h2 class="text-center">@Localizer["NoPosts"]</h2>
+    }
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">@Localizer["Post"]</th>
+                <th scope="col">@Localizer["Description"]</th>
+                <th scope="col">@Localizer["Date"]</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var post in Model.Posts)
+            {
+                <!-- TODO: CHANGE COMMENTS ON COMMENTS VIEW MODEL FOR USERNAME DISPLAY-->
+                <tr>
+                    <td><a href="@Url.Action("Post", "Post", new { id = post.Id })" style="text-decoration: none" class=" text-dark">@Localizer["PostLink"]</a></td>
+                    <td>@post.Description.Truncate(20)</td>
+                    <td>@post.Date.ToString("dd MMMM yyyy")</td>
+                    <td><a href="@Url.Action("DeletePost", "Admin", new { id = post.Id })" class="btn btn-danger confirm" onclick="return confirm('Are you sure you want to delete this post?');">@Localizer["Delete"]</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

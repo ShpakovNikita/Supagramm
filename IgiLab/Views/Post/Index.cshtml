@@ -1,0 +1,75 @@
+﻿@model IEnumerable<Post>;
+@{
+    ViewData["Title"] = "Popular posts";
+}
+
+<div class="col-10">
+
+    <hr class="ml-5">
+    <div class="row ml-5">
+        @foreach (var post in Model)
+        {
+            string path = System.IO.Path.Combine(Pathes.WAB_STATICFILES_DIR, post.ImagePath);
+            string webPath = path.Replace(@"\", "/");
+
+            <div class="col-4 mt-2">
+                <img src="@webPath" class="img-hand" onclick="refreshComponent(@post.Id)" runat="server">
+            </div>
+        }
+    </div>
+    <div class="page-mask" id="mask" style="display: none" onclick="hideMask()"></div>
+    <div id="myComponentContainer"></div>
+</div>
+
+@section scripts {
+<script>
+    var container = $("#myComponentContainer");
+    var refreshComponent = function (num) {
+        $.get("/Post/PostWindowViewComponent/" + num, function (data) { container.html(data); });
+        showMask();
+    };
+
+    function showMask() {
+        document.getElementById('mask').setAttribute("style", "display: initial");
+        console.log('show page-mask')
+    }
+
+    function hideMask() {
+        document.getElementById('mask').setAttribute("style", "display: none");
+        console.log('hide page-mask')
+    }
+
+    document.addEventListener("click", (evt) => {
+        const flyoutElement = document.getElementById("myComponentContainer");
+        let targetElement = evt.target; // clicked element
+
+        do {
+            if (targetElement == flyoutElement) {
+                // This is a click inside. Do nothing, just return.
+                showMask();
+                return;
+            }
+            // Go up the DOM
+            targetElement = targetElement.parentNode;
+        } while (targetElement);
+
+        // This is a click outside.
+        container.html("");
+    });
+
+    function Like(postId) {
+        $.ajax({
+            url: "/api/like/" + postId,
+            contentType: "application/json",
+            method: "POST",
+            success: function (user) {
+                var icon = $('.foo');
+                var icon_fa_prefix = icon.attr('data-prefix');
+                icon.toggleClass('fas');
+                icon.toggleClass('far');
+            }
+        })
+    }
+</script>
+}
+

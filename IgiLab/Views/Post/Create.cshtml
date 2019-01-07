@@ -1,0 +1,25 @@
+﻿@model IgiLab.Models.ViewModels.CreatePostModel
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+<div class="col-md-4"></div>
+<div class="col-md-4">
+    <h2 class="text-center mb-3">Create post page</h2>
+
+    <div class="card">
+        <div class="container mt-4 mb-3">
+            <h3>Select photo</h3>
+            <form asp-action="Create" asp-controller="Post" method="post" enctype="multipart/form-data">
+                <input type="file" class="form-control-file" name="photo" accept=".png,.jpg,.jpeg"/><br>
+                <div class="form-group mt-3">
+                    <label asp-for="Description" class="control-label">Description</label>
+                    <input asp-for="Description" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Send" class="btn btn-default" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

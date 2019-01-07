@@ -1,0 +1,43 @@
+﻿@model IgiLab.Models.ViewModels.EditProfileModel
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+<div class="col-md-4"></div>
+<div class="col-md-4">
+    <h2 class="text-center mb-3">Edit account page</h2>
+
+    <div class="card">
+        <div class="container mt-4 mb-3">
+            <form asp-action="Edit" asp-controller="Account" method="post" enctype="multipart/form-data">
+                <input type="file" class="form-control-file" name="avatar" accept=".png,.jpg,.jpeg" /><br>
+                <div class="validation" asp-validation-summary="ModelOnly" />
+                <div>
+                    <div class="form-group mt-3">
+                        <label asp-for="Password">Type the password</label><br />
+                        <input asp-for="Password" value="@Model.Password" class="form-control" />
+                        <span asp-validation-for="Password" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ConfirmPassword">Repeat the password</label><br />
+                        <input asp-for="ConfirmPassword" class="form-control" />
+                        <span asp-validation-for="ConfirmPassword" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Firstname">Type the firstname</label><br />
+                        <input asp-for="Firstname" value="@Model.Firstname" class="form-control" />
+                        <span asp-validation-for="Firstname" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Lastname">Type the lastname</label><br />
+                        <input asp-for="Lastname" value="@Model.Lastname" class="form-control" />
+                        <span asp-validation-for="Lastname" />
+                    </div>
+                    <div class="form-group text-center">
+                        <input type="submit" value="Enter" class="btn btn-primary" />
+                    </div>
+                </div>
+            </form>
+        </div>
+        </div>
+    </div>

@@ -1,0 +1,35 @@
+﻿@*
+    This is the constants for further use.
+*@
+
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+<nav class="navbar navbar-expand-lg navbar-light bg-white mb-5">
+    <div class="container">
+        <div class="col"></div>
+        <div class="col-10">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+                <a class="navbar-brand" href="@Url.Action("Index", "Post")">Supagramm</a>
+                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                    @Html.Partial("_LoginPartial")
+                </ul>
+                <ul class="navbar-nav mr-auto">
+                    @Html.Partial("_SelectLanguagePartial")
+                </ul>
+                <form class="form-inline my-2 my-lg-0">
+                    <div>
+                        <input class="form-control mr-sm-2" type="search" onfocus="searchFocus(this.value)" onfocusout="searchFocusLeave()" onkeyup="GetUsers(this.value)" placeholder="@Localizer["Search"]" aria-label="Search">
+                        <div class="search-bar" id="search" style="display: none">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col"></div>
+
+    </div>
+</nav>

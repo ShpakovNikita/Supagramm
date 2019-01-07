@@ -1,0 +1,39 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using System.Security.Claims
+@using IgiLab.Constants.Enums
+
+@{
+    bool isAuthenticated = User.Identity.IsAuthenticated;
+    string username = User.Identity.Name;
+}
+
+@if (isAuthenticated)
+{
+
+    int id = Int32.Parse(((ClaimsIdentity)User.Identity).FindFirst(ClaimTypes.NameIdentifier).Value);
+    bool isAdmin = ((ClaimsIdentity)User.Identity).FindFirst(ClaimTypes.Role).Value == Roles.ADMIN;
+
+    <li class="nav-item">
+        <a class="btn btn-primary" href="@Url.Action("Profile", "User", new { id = id })">@("Hello " + username + "!")</a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link" href="@Url.Action("Logout", "Account")">Logout</a>
+    </li>
+
+    if (isAdmin)
+    {
+        <li class="nav-item">
+            <a class="btn btn-outline-warning" href="@Url.Action("Index", "Admin")">SupaPan</a>
+        </li>
+    }
+}
+else
+{
+    <li class="nav-item">
+        <a class="btn btn-primary" href="@Url.Action("Login", "Account")">Login</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="@Url.Action("Register", "Account")">Register</a>
+    </li>
+}

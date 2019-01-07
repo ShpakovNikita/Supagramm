@@ -1,0 +1,71 @@
+﻿@model IgiLab.Models.ViewModels.ProfileModel
+@using Microsoft.AspNetCore.Identity
+@using System.Security.Claims
+@using IgiLab.Constants.Enums
+
+@{
+    bool isAuthenticated = User.Identity.IsAuthenticated;
+}
+
+<div class="row">
+    <div class="col-1"></div>
+    <div class="col-2 mb-5">
+        <img src="@System.IO.Path.Combine(Pathes.WAB_STATICFILES_DIR, Model.AvatarPath).Replace(@"\", "/")" style="width:150px; height:150px; border-radius: 50%; object-fit: cover;" runat="server">
+    </div>
+    <div class="col-1"></div>
+    <div class="col-8">
+        <div class="row">
+            <p class="font-1">@Model.Username<p>
+    @if (isAuthenticated)
+    {
+
+        int id = Int32.Parse(((ClaimsIdentity)User.Identity).FindFirst(ClaimTypes.NameIdentifier).Value);
+
+        @if (id == ViewBag.id)
+        {
+            <a href="@Url.Action("Create", "Post")" class="btn btn-success ml-3 mt-2 text-white">Post <i class="fa fa-plus"></i></a>
+            <a href="@Url.Action("Edit", "Account", new { id = id })" class="btn btn-warning ml-3 mt-2 text-white">Edit <i class="fa fa-cogs"></i></a>
+
+        }
+        
+    }
+
+    @switch (Model.SubscriptionStatus)
+    {
+        case SubscriptionStatus.CanSubscribe:
+            <a class="btn btn-primary ml-3 mt-2 mb-3" href="@Url.Action("Subscribe", "User", new { id = Model.Id })">Subscribe</a>
+            break;
+
+        case SubscriptionStatus.AlreadyFollowing:
+            <div class="dropdown ml-3 mt-2 mb-3">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Subscribe
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="@Url.Action("Unsubscribe", "User", new { id = Model.Id })" onclick="return confirm('Are you sure you want to unsubscribe from @Model.Username?')">Unsubscribe</a>
+                </div>
+            </div>
+            break;
+
+         case SubscriptionStatus.CannotSubscribe:
+            <div class="btn btn-secondary ml-3 mt-2 mb-3">Subscribe</div>
+            break;
+    }
+
+</div>
+        <div class="row">
+            <div class="col nopadding">
+                <span><people-count followers="true" argument="@Model.Id" number="@Model.Followers" class="text-secondary">Followers</people-count></span>
+            </div>
+            <div class="col nopadding">
+                <span><people-count argument="@Model.Id" number="@Model.Posts.Count()" class="text-secondary">Posts</people-count></span>
+            </div>
+            <div class="col nopadding">
+                <span><people-count following="true" argument="@Model.Id" number="@Model.Following" class="text-secondary">Following</people-count></span>
+            </div>
+        </div>
+        <div class="row">
+            <p class="font-2 mt-3">@Model.Firstname @Model.Lastname<p>
+        </div>
+    </div>
+</div>

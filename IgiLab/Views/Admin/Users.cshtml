@@ -1,0 +1,94 @@
+﻿@model IgiLab.Models.ViewModels.Admin.UserAggregationModel
+@using IgiLab.Constants.Enums;
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = Localizer["Title"];
+}
+<div class="col-10">
+    <h2 class="text-center">@Localizer["Users"]</h2>
+    <div class="container">
+        <form asp-action="Users" asp-controller="Admin" asp-antiforgery="true" class="form-signin" method="get">
+            <div class="validation" asp-validation-summary="ModelOnly" />
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="UserSearchModel.Username">@Localizer["TypeUsername"]</label>
+                        <input class="form-control" asp-for="UserSearchModel.Username" value="@Model.UserSearchModel.Username" />
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="UserSearchModel.Firstname">@Localizer["TypeFirstname"]</label>
+                        <input class="form-control" asp-for="UserSearchModel.Firstname" value="@Model.UserSearchModel.Firstname" />
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="UserSearchModel.Lastname">@Localizer["TypeLastname"]</label>
+                        <input class="form-control" asp-for="UserSearchModel.Lastname" value="@Model.UserSearchModel.Lastname" />
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="UserSearchModel.Role">@Localizer["SelectRole"]</label>
+                        <select class="form-control" asp-for="UserSearchModel.Role">
+                            <option>@Roles.USER</option>
+                            <option>@Roles.ADMIN</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group text-center mt-4">
+                        <input type="submit" value="Find!" class="btn btn-primary" />
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    @if (!Model.Users.Any())
+    {
+    <h2 class="text-center">@Localizer["NoUsers"]</h2>
+    }
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">@Localizer["User"]</th>
+                <th scope="col">@Localizer["Username"]</th>
+                <th scope="col">@Localizer["Initials"]</th>
+                <th scope="col">@Localizer["Id"]</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model.Users)
+            {
+                string path = System.IO.Path.Combine(Pathes.WAB_STATICFILES_DIR, user.AvatarPath);
+                string webPath = path.Replace(@"\", "/");
+
+                <tr>
+                    <td>
+                        <a href="@Url.Action("Profile", "User", new { id = user.Id })">
+                            <img src="@webPath" class="img-hand avatar-small" runat="server">
+                    </td>
+                    <td>@user.Username</td>
+                    <td>@user.Firstname @user.Lastname</td>
+                    <td>@user.Id</td>
+
+                    @if (user.Role == Roles.USER)
+                    {
+                        <td><a href="@Url.Action("TogglePromotion", "Admin", new { id = user.Id })" class="btn btn-warning confirm" onclick="return confirm('Are you sure you want to promote @user.Username?');">@Localizer["Promote"]</a></td>
+                    }
+                    else
+                    {
+                        <td><a href="@Url.Action("TogglePromotion", "Admin", new { id = user.Id })" class="btn btn-warning confirm" onclick="return confirm('Are you sure you want to demote @user.Username?');">@Localizer["Demote"]</a></td>
+                    }
+
+                    <td><a href="@Url.Action("DeleteUser", "Admin", new { id = user.Id })" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete @user.Username?')">@Localizer["Delete"]</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

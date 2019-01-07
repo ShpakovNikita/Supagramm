@@ -1,0 +1,50 @@
+﻿@model IgiLab.Models.ViewModels.RegisterModel
+
+<div class="col-md-4"></div>
+<div class="col-md-4">
+    <h2 class="text-center mb-3">Register</h2>
+
+    <div class="card">
+        <div class="container mt-4 mb-3">
+            <form asp-action="Register" asp-controller="Account" asp-antiforgery="true">
+                <div class="validation" asp-validation-summary="ModelOnly" />
+                <div>
+                    <div class="form-group">
+                        <label>Type Username</label><br />
+                        <input type="text" class="form-control" asp-for="Username" />
+                        <span asp-validation-for="Username" />
+                    </div>
+                    <div class="form-group">
+                        <label>Type Email</label><br />
+                        <input type="text" class="form-control" asp-for="Email" />
+                        <span asp-validation-for="Email" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Password">Type the password</label><br />
+                        <input asp-for="Password" class="form-control" />
+                        <span asp-validation-for="Password" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ConfirmPassword">Repeat the password</label><br />
+                        <input asp-for="ConfirmPassword" class="form-control" />
+                        <span asp-validation-for="ConfirmPassword" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Firstname">Type the firstname</label><br />
+                        <input asp-for="Firstname" class="form-control" />
+                        <span asp-validation-for="Firstname" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Lastname">Type the lastname</label><br />
+                        <input asp-for="Lastname" class="form-control" />
+                        <span asp-validation-for="Lastname" />
+                    </div>
+                    <div class="form-group text-center">
+                        <input type="submit" value="Enter" class="btn btn-primary" />
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
